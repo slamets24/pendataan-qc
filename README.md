@@ -1,61 +1,169 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pendataan-QC: Quality Control Management System 📊
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Primary Language: Blade](https://img.shields.io/badge/Language-Blade-blue.svg)]()
+[![Stars](https://img.shields.io/github/stars/slamets24/pendataan-qc?style=social)]()
+[![Forks](https://img.shields.io/github/forks/slamets24/pendataan-qc?style=social)]()
 
-## About Laravel
+A comprehensive web application for managing quality control processes, inventory tracking, and purchase order management. Built with Laravel, this system provides a user-friendly interface to streamline QC operations and improve overall efficiency.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📑 Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Important Links](#important-links)
+- [Footer](#footer)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 💡 About
+This application is designed to streamline quality control (QC) processes, manage inventory, and handle purchase orders. Key features include tracking incoming and outgoing goods, managing revisions, and providing insights through comprehensive data visualization. It's built using Laravel and leverages technologies like Alpine.js and Tailwind CSS for a modern and responsive user interface.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features
+- **Dashboard Overview:** Get a quick snapshot of key metrics including total brands, articles, incoming goods, outgoing goods, revisions, and QC processed items. 📈
+- **Brand Management:** Add, edit, and manage different brands with types (PO, Reseller, Store Stock, Makloon). 🏢
+- **Article Management:** Categorize and track articles associated with specific brands. 🏷️
+- **Color and Size Management:** Define available colors and sizes for products. 🎨📏
+- **Sales Channel Management:** Manage different sales channels associated with brands. 📢
+- **Purchase Order (PO) Management:** Create, track, and manage purchase orders with automated PO number generation. 📝
+- **Incoming Goods Tracking:** Track incoming stock, their QC status, and link them to POs. 📦
+- **QC Summary:** Summarize quality control processes like hanging, buttoning, plating, steaming, and thread trimming. ✅
+- **Revision Tracking:** Track revisions with tailor and QC codes for detailed analysis. 🔄
+- **Outgoing Goods Management:** Manage goods sent for packing and track their status. 🚚
+- **Reporting:** Data visualization with charts for QC processes, stock status, and monthly trends. 📊
+- **User Authentication:** Secure login and registration with role-based access control (Admin, Staff). 🔒
 
-## Learning Laravel
+## 🛠️ Tech Stack
+- **Backend Framework:** Laravel (PHP) 💻
+- **Frontend Framework:** Blade (Templating Engine), Alpine.js, JavaScript 🎨
+- **Styling:** Tailwind CSS, Bootstrap 🖌️
+- **Charts:** Chart.js 📊
+- **Package Management:** npm, Composer 📦
+- **Other:** Axios, Vite
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ⚙️ Installation
+1.  **Clone the repository:**
+   ```bash
+   git clone https://github.com/slamets24/pendataan-qc.git
+   cd pendataan-qc
+   ```
+2.  **Install Composer dependencies:**
+   ```bash
+   composer install
+   ```
+3.  **Copy the environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+4.  **Generate application key:**
+   ```bash
+   php artisan key:generate
+   ```
+5.  **Configure your database:**
+    -   Edit the `.env` file with your database credentials. The default connection is SQLite, but you can configure MySQL or other database connections.
+    -   For SQLite, ensure the database file exists:
+       ```bash
+       touch database/database.sqlite
+       ```
+6.  **Run database migrations:**
+   ```bash
+   php artisan migrate
+   ```
+7.  **Install npm dependencies:**
+   ```bash
+   npm install
+   ```
+8.  **Build the assets using Vite:**
+   ```bash
+   npm run build
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🚀 Usage
+1.  **Serve the application:**
+   ```bash
+   php artisan serve
+   ```
+2.  **Access the application** in your web browser at `http://localhost` or the specified address.
+3.  **Initial Setup:** Seed the database with initial data:
+ ```bash
+ php artisan db:seed
+ ```
+4.  **Access the application**Login with credentials from database seed.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+### Real World Use Cases
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Imagine a garment manufacturing company aiming to optimize its quality control and production processes. This system can be used to:
 
-### Premium Partners
+*   **Track incoming fabrics and accessories** when they arrive at the warehouse.
+*   **Manage QC checkpoints** for each stage of production such as hanging, buttoning, plating, and steaming.
+*   **Record revisions** and assign them to specific tailors, ensuring accountability.
+*   **Monitor outgoing goods** sent to packing and dispatch.
+*   **Generate reports** on common defects, tailor performance, and overall production efficiency.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### How to Use
 
-## Contributing
+1.  **Brands**: Start by defining different brands your company handles (e.g., Azzahra, Makloon).
+2.  **Articles**: Categorize each type of product, such as dresses, scarves, or bergos.
+3.  **Colors and Sizes**: Define available variations for each product.
+4.  **Purchase Orders**: Create POs to track orders from different brands.
+5.  **Incoming Goods**: Register incoming stock by linking them to brands, articles, and POs.
+6.  **QC Summaries**: Record QC processes performed on the incoming goods.
+7.  **Revisions**: Track any revisions needed and assign them to tailors.
+8.  **Outgoing Goods**: Manage the transfer of goods to the packing department.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📂 Project Structure
+```
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/ - Controllers for handling HTTP requests.
+│   │   ├── Requests/ - Form request classes for validation.
+│   ├── Models/ - Eloquent models representing database tables.
+│   ├── Providers/ - Service providers for application bootstrapping.
+│   └── View/ 
+│       └── Components/ - Blade components for reusable UI elements
+├── bootstrap/ - Bootstrapping code.
+├── config/ - Application configuration files.
+├── database/
+│   ├── factories/ - Factories for generating model instances.
+│   ├── migrations/ - Database migration files.
+│   └── seeders/ - Database seeders to populate initial data.
+├── public/ - Publicly accessible files.
+├── resources/
+│   ├── css/ - CSS stylesheets (Tailwind CSS).
+│   ├── js/ - JavaScript files (Alpine.js).
+│   └── views/ - Blade templates for the application's UI.
+├── routes/ - Route definitions for web, API, and console.
+├── storage/ - Storage directory for logs, cache, and sessions.
+└── tests/ - PHPUnit tests for the application.
+```
 
-## Code of Conduct
+## ✍️ Contributing
+Contributions are welcome! Please follow these steps:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1.  Fork the repository. 🍴
+2.  Create a new branch. 🌿
+3.  Make your changes.
+4.  Submit a pull request. 🚀
 
-## Security Vulnerabilities
+## 📜 License
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🔗 Important Links
+- [slamets24's Github Profile](https://github.com/slamets24)
+- [Pendataan-qc Repository](https://github.com/slamets24/pendataan-qc)
 
-## License
+## <footer>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+							Made with ❤️ by [slamets24](https://github.com/slamets24) - Fork it on [GitHub](https://github.com/slamets24/pendataan-qc)! Give it a ⭐, raise an 🐞 if found.
+							Contact: slamets.tn@gmail.com
+							 
+							© 2024 Quality Control System. All rights reserved.
+</footer>
+
+
+---
+**<p align="center">Generated by [ReadmeCodeGen](https://www.readmecodegen.com/)</p>**
