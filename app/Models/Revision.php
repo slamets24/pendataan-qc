@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Revision extends Model
 {
     protected $fillable = [
+        'brand_id',
         'article_id',
         'color_id',
         'size_id',
@@ -21,6 +22,11 @@ class Revision extends Model
     protected $casts = [
         'date' => 'date',
     ];
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
 
     public function article(): BelongsTo
     {

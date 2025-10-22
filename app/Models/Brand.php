@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Article extends Model
+class Brand extends Model
 {
     protected $fillable = [
-        'article_name',
-        'category',
-        'created_date',
+        'name',
+        'type',
+        'description',
     ];
 
-    protected $casts = [
-        'created_date' => 'date',
-    ];
+    public function salesChannels(): HasMany
+    {
+        return $this->hasMany(SalesChannel::class);
+    }
 
     public function purchaseOrders(): HasMany
     {

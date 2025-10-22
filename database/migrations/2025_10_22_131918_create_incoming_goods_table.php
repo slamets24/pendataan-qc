@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('incoming_goods', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
@@ -20,6 +21,8 @@ return new class extends Migration
             $table->date('date');
             $table->enum('status', ['received', 'qc', 'completed', 'revised']);
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('po_id')->nullable()->constrained('purchase_orders')->onDelete('set null'); // only for PO-based brands
+            $table->foreignId('sales_channel_id')->nullable()->constrained('sales_channels')->onDelete('set null'); // only for Lobang Kancing
             $table->text('notes')->nullable();
             $table->timestamps();
         });

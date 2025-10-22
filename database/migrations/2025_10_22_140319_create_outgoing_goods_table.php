@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('revisions', function (Blueprint $table) {
+        Schema::create('outgoing_goods', function (Blueprint $table) {
             $table->id();
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
+            $table->foreignId('incoming_id')->nullable()->constrained('incoming_goods')->onDelete('set null'); // optional link to source batch
+            $table->integer('qty');
             $table->date('date');
-            $table->string('tailor_code');
-            $table->string('qc_code'); // manually entered by QC (no login required)
-            $table->integer('qty')->default(1);
-            $table->text('reason')->nullable();
+            $table->enum('status', ['sent_to_packing', 'returned_to_qc', 'cancelled'])->default('sent_to_packing');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade'); // who recorded the transfer
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('revisions');
+        Schema::dropIfExists('outgoing_goods');
     }
 };

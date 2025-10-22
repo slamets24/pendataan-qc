@@ -9,7 +9,32 @@
         <div class="mx-auto">
 
             <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-6">
+                <!-- Total Brands -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg border-l-4 border-indigo-500">
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg class="h-12 w-12 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                                        Total Brand
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                                            {{ $totalBrands }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Total Articles -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg border-l-4 border-blue-500">
                     <div class="p-6">
@@ -87,6 +112,32 @@
                     </div>
                 </div>
 
+                <!-- Total Outgoing Goods -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg border-l-4 border-amber-500">
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg class="h-12 w-12 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                                        Kirim Packing
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                                            {{ number_format($totalOutgoingGoods) }}
+                                        </div>
+                                        <div class="ml-2 text-sm text-gray-500 dark:text-gray-400">pcs</div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Total Revisions -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg border-l-4 border-red-500">
                     <div class="p-6">
@@ -115,7 +166,7 @@
             </div>
 
             <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-6">
                 <!-- QC Process Chart -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
@@ -132,11 +183,80 @@
                     </div>
                 </div>
 
+                <!-- Status Outgoing Chart -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Status Kirim Packing</h3>
+                        <canvas id="outgoingChart" height="200"></canvas>
+                    </div>
+                </div>
+
                 <!-- Monthly Trend Chart -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg lg:col-span-3">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Trend Barang Masuk (6 Bulan Terakhir)</h3>
                         <canvas id="monthlyTrendChart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Statistics Section -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg mb-6">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Statistik Per Brand</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-900">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Brand</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tipe</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Barang Masuk</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kirim Packing</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Revisi</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">PO</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                @foreach($brandStats as $brand)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $brand->name }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                                        @php
+                                            $typeLabels = [
+                                                'po' => 'Purchase Order',
+                                                'reseller' => 'Reseller',
+                                                'store_stock' => 'Store Stock',
+                                                'makloon' => 'Makloon',
+                                            ];
+                                            $typeColors = [
+                                                'po' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                                'reseller' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                                'store_stock' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+                                                'makloon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+                                            ];
+                                        @endphp
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $typeColors[$brand->type] ?? '' }}">
+                                            {{ $typeLabels[$brand->type] ?? ucfirst($brand->type) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                        {{ number_format($brand->incoming_goods_sum_qty ?? 0) }} pcs
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                        {{ number_format($brand->outgoing_goods_sum_qty ?? 0) }} pcs
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                        {{ number_format($brand->revisions_sum_qty ?? 0) }} pcs
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                        {{ $brand->purchase_orders_count ?? 0 }} PO
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -161,7 +281,8 @@
                                     @foreach($recentIncoming as $item)
                                     <tr>
                                         <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                                            {{ $item->article->article_name }}
+                                            <div class="font-medium">{{ $item->article->article_name }}</div>
+                                            <div class="text-xs text-indigo-600 dark:text-indigo-400">{{ $item->brand->name }}</div>
                                         </td>
                                         <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                                             {{ $item->color->name }} / {{ $item->size->code }}
@@ -196,6 +317,58 @@
                     </div>
                 </div>
 
+                <!-- Recent Outgoing Goods -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Kirim Packing Terbaru</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-900">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Artikel</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Warna/Size</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Qty</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach($recentOutgoing as $item)
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            <div class="font-medium">{{ $item->article->article_name }}</div>
+                                            <div class="text-xs text-indigo-600 dark:text-indigo-400">{{ $item->brand->name }}</div>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                                            {{ $item->color->name }} / {{ $item->size->code }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $item->qty }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            @php
+                                                $outgoingStatusColors = [
+                                                    'sent_to_packing' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                                    'returned_to_qc' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                                                    'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                                ];
+                                                $outgoingStatusLabels = [
+                                                    'sent_to_packing' => 'Kirim Packing',
+                                                    'returned_to_qc' => 'Return QC',
+                                                    'cancelled' => 'Dibatalkan',
+                                                ];
+                                            @endphp
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $outgoingStatusColors[$item->status] ?? '' }}">
+                                                {{ $outgoingStatusLabels[$item->status] ?? ucfirst($item->status) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Recent Revisions -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
@@ -214,7 +387,8 @@
                                     @foreach($recentRevisions as $revision)
                                     <tr>
                                         <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                                            {{ $revision->article->article_name }}
+                                            <div class="font-medium">{{ $revision->article->article_name }}</div>
+                                            <div class="text-xs text-indigo-600 dark:text-indigo-400">{{ $revision->brand->name }}</div>
                                         </td>
                                         <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                                             {{ $revision->tailor_code }}
@@ -361,6 +535,45 @@
                         'rgb(59, 130, 246)',
                         'rgb(245, 158, 11)',
                         'rgb(16, 185, 129)',
+                        'rgb(239, 68, 68)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        // Outgoing Goods Chart
+        const outgoingCtx = document.getElementById('outgoingChart').getContext('2d');
+        const outgoingChart = new Chart(outgoingCtx, {
+            type: 'pie',
+            data: {
+                labels: {!! json_encode($outgoingByStatus->pluck('status')->map(function($s) {
+                    $translations = [
+                        'sent_to_packing' => 'Kirim Packing',
+                        'returned_to_qc' => 'Return QC',
+                        'cancelled' => 'Dibatalkan'
+                    ];
+                    return $translations[$s] ?? ucfirst(str_replace('_', ' ', $s));
+                })) !!},
+                datasets: [{
+                    data: {!! json_encode($outgoingByStatus->pluck('count')) !!},
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                    ],
+                    borderColor: [
+                        'rgb(16, 185, 129)',
+                        'rgb(245, 158, 11)',
                         'rgb(239, 68, 68)',
                     ],
                     borderWidth: 1

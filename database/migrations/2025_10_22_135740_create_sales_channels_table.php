@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('q_c_summaries', function (Blueprint $table) {
+        Schema::create('sales_channels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
-            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
-            $table->date('date');
-            $table->enum('process', ['hanging', 'buttoning', 'plating', 'steaming', 'thread_trimming']);
-            $table->integer('qty'); // total pcs processed in this step
-            $table->text('notes')->nullable();
+            $table->string('name'); // e.g., "Reseller", "Store Stock"
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('q_c_summaries');
+        Schema::dropIfExists('sales_channels');
     }
 };

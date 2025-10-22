@@ -4,21 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class IncomingGoods extends Model
+class OutgoingGoods extends Model
 {
     protected $fillable = [
         'brand_id',
         'article_id',
         'color_id',
         'size_id',
+        'incoming_id',
         'qty',
         'date',
         'status',
         'created_by',
-        'po_id',
-        'sales_channel_id',
         'notes',
     ];
 
@@ -46,23 +44,13 @@ class IncomingGoods extends Model
         return $this->belongsTo(Size::class);
     }
 
+    public function incomingGoods(): BelongsTo
+    {
+        return $this->belongsTo(IncomingGoods::class, 'incoming_id');
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function purchaseOrder(): BelongsTo
-    {
-        return $this->belongsTo(PurchaseOrder::class, 'po_id');
-    }
-
-    public function salesChannel(): BelongsTo
-    {
-        return $this->belongsTo(SalesChannel::class);
-    }
-
-    public function outgoingGoods(): HasMany
-    {
-        return $this->hasMany(OutgoingGoods::class, 'incoming_id');
     }
 }

@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('revisions', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('po_number');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
-            $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
-            $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
-            $table->date('date');
-            $table->string('tailor_code');
-            $table->string('qc_code'); // manually entered by QC (no login required)
-            $table->integer('qty')->default(1);
-            $table->text('reason')->nullable();
+            $table->date('order_date');
+            $table->integer('qty_ordered');
+            $table->enum('status', ['open', 'in_progress', 'completed'])->default('open');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('revisions');
+        Schema::dropIfExists('purchase_orders');
     }
 };

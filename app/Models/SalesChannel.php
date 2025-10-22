@@ -4,20 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class QCSummary extends Model
+class SalesChannel extends Model
 {
     protected $fillable = [
         'brand_id',
-        'article_id',
-        'date',
-        'process',
-        'qty',
-        'notes',
-    ];
-
-    protected $casts = [
-        'date' => 'date',
+        'name',
+        'description',
     ];
 
     public function brand(): BelongsTo
@@ -25,8 +19,8 @@ class QCSummary extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function article(): BelongsTo
+    public function incomingGoods(): HasMany
     {
-        return $this->belongsTo(Article::class);
+        return $this->hasMany(IncomingGoods::class);
     }
 }
