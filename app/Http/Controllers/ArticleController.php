@@ -89,4 +89,16 @@ class ArticleController extends Controller
         return redirect()->route('articles.index')
             ->with('success', 'Artikel berhasil dihapus!');
     }
+
+    /**
+     * Get articles by brand (for AJAX)
+     */
+    public function getByBrand($brandId)
+    {
+        $articles = Article::where('brand_id', $brandId)
+            ->orderBy('article_name')
+            ->get(['id', 'article_name', 'category']);
+
+        return response()->json($articles);
+    }
 }

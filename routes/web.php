@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     // Master Data Routes
     Route::resource('brands', BrandController::class);
     Route::resource('articles', ArticleController::class);
+    Route::get('api/articles/brand/{brandId}', [ArticleController::class, 'getByBrand'])->name('articles.by-brand');
     Route::resource('colors', ColorController::class);
     Route::resource('sizes', SizeController::class);
     Route::resource('sales-channels', SalesChannelController::class);
