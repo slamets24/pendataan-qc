@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -12,7 +13,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
+        $articles = Article::with('brand')->latest()->paginate(10);
         return view('pages.articles.index', compact('articles'));
     }
 
@@ -21,7 +22,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('pages.articles.create');
+        $brands = Brand::orderBy('name')->get();
+        return view('pages.articles.create', compact('brands'));
     }
 
     /**
@@ -30,6 +32,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'brand_id' => 'required|exists:brands,id',
             'article_name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'created_date' => 'required|date',
@@ -54,7 +57,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        return view('pages.articles.edit', compact('article'));
+        $brands = Brand::orderBy('name')->get();
+        return view('pages.articles.edit', compact('article', 'brands'));
     }
 
     /**
@@ -63,6 +67,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validated = $request->validate([
+            'brand_id' => 'required|exists:brands,id',
             'article_name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'created_date' => 'required|date',

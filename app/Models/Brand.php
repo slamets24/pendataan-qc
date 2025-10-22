@@ -13,6 +13,11 @@ class Brand extends Model
         'description',
     ];
 
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
+    }
+
     public function salesChannels(): HasMany
     {
         return $this->hasMany(SalesChannel::class);

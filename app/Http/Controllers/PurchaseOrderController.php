@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Brand;
+use App\Models\Color;
+use App\Models\Size;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $purchaseOrders = PurchaseOrder::with(['brand', 'article'])->latest()->paginate(10);
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])->latest()->paginate(10);
         return view('pages.purchase-orders.index', compact('purchaseOrders'));
     }
 
@@ -25,7 +27,9 @@ class PurchaseOrderController extends Controller
     {
         $brands = Brand::all();
         $articles = Article::all();
-        return view('pages.purchase-orders.create', compact('brands', 'articles'));
+        $colors = Color::all();
+        $sizes = Size::all();
+        return view('pages.purchase-orders.create', compact('brands', 'articles', 'colors', 'sizes'));
     }
 
     /**
@@ -37,8 +41,12 @@ class PurchaseOrderController extends Controller
             'po_number' => 'required|string|max:255|unique:purchase_orders',
             'brand_id' => 'required|exists:brands,id',
             'article_id' => 'required|exists:articles,id',
-            'qty' => 'required|integer|min:1',
-            'po_date' => 'required|date',
+            'color_id' => 'required|exists:colors,id',
+            'size_id' => 'required|exists:sizes,id',
+            'qty_ordered' => 'required|integer|min:1',
+            'order_date' => 'required|date',
+            'status' => 'required|in:open,in_progress,completed',
+            'notes' => 'nullable|string',
         ]);
 
         PurchaseOrder::create($validated);
@@ -62,7 +70,9 @@ class PurchaseOrderController extends Controller
     {
         $brands = Brand::all();
         $articles = Article::all();
-        return view('pages.purchase-orders.edit', compact('purchaseOrder', 'brands', 'articles'));
+        $colors = Color::all();
+        $sizes = Size::all();
+        return view('pages.purchase-orders.edit', compact('purchaseOrder', 'brands', 'articles', 'colors', 'sizes'));
     }
 
     /**
@@ -74,8 +84,12 @@ class PurchaseOrderController extends Controller
             'po_number' => 'required|string|max:255|unique:purchase_orders,po_number,' . $purchaseOrder->id,
             'brand_id' => 'required|exists:brands,id',
             'article_id' => 'required|exists:articles,id',
-            'qty' => 'required|integer|min:1',
-            'po_date' => 'required|date',
+            'color_id' => 'required|exists:colors,id',
+            'size_id' => 'required|exists:sizes,id',
+            'qty_ordered' => 'required|integer|min:1',
+            'order_date' => 'required|date',
+            'status' => 'required|in:open,in_progress,completed',
+            'notes' => 'nullable|string',
         ]);
 
         $purchaseOrder->update($validated);

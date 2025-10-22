@@ -32,9 +32,9 @@
                                     class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                     required>
                                 <option value="">Pilih Tipe</option>
-                                <option value="internal" {{ old('type') == 'internal' ? 'selected' : '' }}>Internal</option>
+                                <option value="po" {{ old('type') == 'po' ? 'selected' : '' }}>PO (Purchase Order)</option>
                                 <option value="reseller" {{ old('type') == 'reseller' ? 'selected' : '' }}>Reseller</option>
-                                <option value="store" {{ old('type') == 'store' ? 'selected' : '' }}>Store</option>
+                                <option value="store_stock" {{ old('type') == 'store_stock' ? 'selected' : '' }}>Store Stock</option>
                                 <option value="makloon" {{ old('type') == 'makloon' ? 'selected' : '' }}>Makloon</option>
                             </select>
                             @error('type')

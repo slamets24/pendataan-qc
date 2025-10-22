@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Article extends Model
 {
     protected $fillable = [
+        'brand_id',
         'article_name',
         'category',
         'created_date',
@@ -16,6 +18,11 @@ class Article extends Model
     protected $casts = [
         'created_date' => 'date',
     ];
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
 
     public function purchaseOrders(): HasMany
     {

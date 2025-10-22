@@ -14,6 +14,23 @@
                         @method('PUT')
 
                         <div class="mb-6">
+                            <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Brand <span class="text-red-500">*</span>
+                            </label>
+                            <select name="brand_id" id="brand_id"
+                                    class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    required>
+                                <option value="">Pilih Brand</option>
+                                @foreach($brands as $brand)
+                                    <option value="{{ $brand->id }}" {{ old('brand_id', $article->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('brand_id')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-6">
                             <label for="article_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Nama Artikel <span class="text-red-500">*</span>
                             </label>

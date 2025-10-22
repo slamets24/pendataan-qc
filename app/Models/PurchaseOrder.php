@@ -12,12 +12,16 @@ class PurchaseOrder extends Model
         'po_number',
         'brand_id',
         'article_id',
-        'po_date',
-        'qty',
+        'color_id',
+        'size_id',
+        'order_date',
+        'qty_ordered',
+        'status',
+        'notes',
     ];
 
     protected $casts = [
-        'po_date' => 'date',
+        'order_date' => 'date',
     ];
 
     public function brand(): BelongsTo
@@ -28,6 +32,16 @@ class PurchaseOrder extends Model
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class);
     }
 
     public function incomingGoods(): HasMany
