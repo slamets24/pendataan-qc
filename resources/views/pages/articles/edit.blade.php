@@ -41,7 +41,7 @@
                             <label for="created_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Tanggal Dibuat <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="created_date" id="created_date" value="{{ old('created_date', $article->created_date->format('Y-m-d')) }}"
+                            <input type="date" name="created_date" id="created_date" value="{{ old('created_date', $article->created_date ? $article->created_date->format('Y-m-d') : '') }}"
                                    class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                    required>
                             @error('created_date')

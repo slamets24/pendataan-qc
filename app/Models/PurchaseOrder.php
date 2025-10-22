@@ -12,14 +12,12 @@ class PurchaseOrder extends Model
         'po_number',
         'brand_id',
         'article_id',
-        'order_date',
-        'qty_ordered',
-        'status',
-        'notes',
+        'po_date',
+        'qty',
     ];
 
     protected $casts = [
-        'order_date' => 'date',
+        'po_date' => 'date',
     ];
 
     public function brand(): BelongsTo

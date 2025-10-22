@@ -16,10 +16,8 @@ return new class extends Migration
             $table->string('po_number');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
-            $table->date('order_date');
-            $table->integer('qty_ordered');
-            $table->enum('status', ['open', 'in_progress', 'completed'])->default('open');
-            $table->text('notes')->nullable();
+            $table->date('po_date');
+            $table->integer('qty');
             $table->timestamps();
         });
     }
