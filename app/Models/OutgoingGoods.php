@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OutgoingGoods extends Model
 {
     protected $fillable = [
+        'po_id',
         'brand_id',
         'article_id',
         'color_id',
@@ -52,5 +53,10 @@ class OutgoingGoods extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function purchaseOrder(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseOrder::class, 'po_id');
     }
 }

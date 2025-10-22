@@ -138,7 +138,7 @@
 
                             <div>
                                 <label for="qty_ordered" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Quantity <span class="text-red-500">*</span>
+                                    Quantity Ordered <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" name="qty_ordered" id="qty_ordered" value="{{ old('qty_ordered', $purchaseOrder->qty_ordered) }}" min="1"
                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
@@ -149,19 +149,33 @@
                             </div>
 
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Status <span class="text-red-500">*</span>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Progress PO
                                 </label>
-                                <select name="status" id="status"
-                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        required>
-                                    <option value="open" {{ old('status', $purchaseOrder->status) == 'open' ? 'selected' : '' }}>Open</option>
-                                    <option value="in_progress" {{ old('status', $purchaseOrder->status) == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                    <option value="completed" {{ old('status', $purchaseOrder->status) == 'completed' ? 'selected' : '' }}>Completed</option>
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
+                                <div class="p-4 bg-gray-50 dark:bg-gray-900/20 rounded-lg border border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Dikirim ke Packing</span>
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                            {{ number_format($purchaseOrder->qty_sent) }} / {{ number_format($purchaseOrder->qty_ordered) }} pcs
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                             style="width: {{ min($purchaseOrder->progress, 100) }}%"></div>
+                                    </div>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">{{ $purchaseOrder->progress }}% Complete</span>
+                                        @if($purchaseOrder->auto_status == 'completed')
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                Completed
+                                            </span>
+                                        @else
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                                In Progress
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

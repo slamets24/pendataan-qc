@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('outgoing_goods', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('po_id')->nullable()->constrained('purchase_orders')->onDelete('set null'); // Link to PO for tracking progress
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');

@@ -14,6 +14,27 @@
                         @method('PUT')
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label for="po_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Purchase Order (Opsional)
+                                </label>
+                                <select name="po_id" id="po_id"
+                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Tidak Terkait PO</option>
+                                    @foreach($purchaseOrders as $po)
+                                        <option value="{{ $po->id }}" {{ old('po_id', $outgoingGood->po_id) == $po->id ? 'selected' : '' }}>
+                                            {{ $po->po_number }} - {{ $po->brand->name }} - {{ $po->article->article_name }} ({{ $po->color->name }}/{{ $po->size->code }}) - Sisa: {{ $po->qty_remaining }} pcs
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('po_id')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    💡 Pilih PO jika pengiriman ini untuk memenuhi Purchase Order. Progress PO akan otomatis terupdate.
+                                </p>
+                            </div>
+
                             <div>
                                 <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Brand <span class="text-red-500">*</span>

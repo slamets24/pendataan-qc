@@ -44,7 +44,6 @@ class PurchaseOrderController extends Controller
             'size_id' => 'required|exists:sizes,id',
             'qty_ordered' => 'required|integer|min:1',
             'order_date' => 'required|date',
-            'status' => 'required|in:open,in_progress,completed',
             'notes' => 'nullable|string',
         ]);
 
@@ -118,7 +117,6 @@ class PurchaseOrderController extends Controller
             'size_id' => 'required|exists:sizes,id',
             'qty_ordered' => 'required|integer|min:1',
             'order_date' => 'required|date',
-            'status' => 'required|in:open,in_progress,completed',
             'notes' => 'nullable|string',
         ]);
 

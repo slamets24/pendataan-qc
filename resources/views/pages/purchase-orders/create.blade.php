@@ -137,7 +137,7 @@
                                 @enderror
                             </div>
 
-                            <div>
+                            <div class="md:col-span-2">
                                 <label for="qty_ordered" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Quantity <span class="text-red-500">*</span>
                                 </label>
@@ -147,22 +147,9 @@
                                 @error('qty_ordered')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
-                            </div>
-
-                            <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Status <span class="text-red-500">*</span>
-                                </label>
-                                <select name="status" id="status"
-                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        required>
-                                    <option value="open" {{ old('status') == 'open' ? 'selected' : '' }}>Open</option>
-                                    <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                    <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    💡 Status PO akan otomatis "In Progress" dan berubah "Completed" ketika semua qty sudah dikirim ke packing.
+                                </p>
                             </div>
                         </div>
 

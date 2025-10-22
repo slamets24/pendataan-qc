@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->date('order_date');
             $table->integer('qty_ordered');
-            $table->enum('status', ['open', 'in_progress', 'completed'])->default('open');
+            $table->enum('status', ['in_progress', 'completed'])->default('in_progress');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

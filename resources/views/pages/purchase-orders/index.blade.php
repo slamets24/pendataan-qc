@@ -56,20 +56,29 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                     {{ $po->order_date ? $po->order_date->format('d M Y') : '-' }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($po->status == 'open')
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                            Open
-                                        </span>
-                                    @elseif($po->status == 'in_progress')
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                                            In Progress
-                                        </span>
-                                    @elseif($po->status == 'completed')
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                            Completed
-                                        </span>
-                                    @endif
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-1 min-w-[100px]">
+                                            <div class="flex justify-between text-xs mb-1">
+                                                <span class="text-gray-600 dark:text-gray-400">{{ $po->qty_sent }}/{{ $po->qty_ordered }}</span>
+                                                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $po->progress }}%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                                <div class="h-2 rounded-full transition-all duration-300
+                                                    {{ $po->auto_status == 'completed' ? 'bg-green-500' : 'bg-yellow-500' }}"
+                                                    style="width: {{ min($po->progress, 100) }}%"></div>
+                                            </div>
+                                        </div>
+                                        @if($po->auto_status == 'completed')
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 whitespace-nowrap">
+                                                Selesai
+                                            </span>
+                                        @else
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 whitespace-nowrap">
+                                                Proses
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <a href="{{ route('purchase-orders.edit', $po) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">Edit</a>

@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Color;
 use App\Models\Size;
 use App\Models\IncomingGoods;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 
 class OutgoingGoodsController extends Controller
@@ -36,8 +37,12 @@ class OutgoingGoodsController extends Controller
         $incomingGoods = IncomingGoods::with(['brand', 'article', 'color', 'size'])
             ->orderBy('date', 'desc')
             ->get();
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
+            ->where('status', 'in_progress')
+            ->orderBy('order_date', 'desc')
+            ->get();
 
-        return view('pages.outgoing-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'incomingGoods'));
+        return view('pages.outgoing-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders'));
     }
 
     /**
@@ -85,8 +90,12 @@ class OutgoingGoodsController extends Controller
         $incomingGoods = IncomingGoods::with(['brand', 'article', 'color', 'size'])
             ->orderBy('date', 'desc')
             ->get();
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
+            ->where('status', 'in_progress')
+            ->orderBy('order_date', 'desc')
+            ->get();
 
-        return view('pages.outgoing-goods.edit', compact('outgoingGood', 'brands', 'articles', 'colors', 'sizes', 'incomingGoods'));
+        return view('pages.outgoing-goods.edit', compact('outgoingGood', 'brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders'));
     }
 
     /**
@@ -95,6 +104,7 @@ class OutgoingGoodsController extends Controller
     public function update(Request $request, OutgoingGoods $outgoingGood)
     {
         $validated = $request->validate([
+            'po_id' => 'nullable|exists:purchase_orders,id',
             'brand_id' => 'required|exists:brands,id',
             'article_id' => 'required|exists:articles,id',
             'color_id' => 'required|exists:colors,id',
