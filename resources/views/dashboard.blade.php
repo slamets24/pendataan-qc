@@ -177,9 +177,15 @@
                                                     'completed' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
                                                     'revised' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
                                                 ];
+                                                $statusLabels = [
+                                                    'received' => 'Diterima',
+                                                    'qc' => 'QC',
+                                                    'completed' => 'Selesai',
+                                                    'revised' => 'Revisi',
+                                                ];
                                             @endphp
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColors[$item->status] ?? '' }}">
-                                                {{ ucfirst($item->status) }}
+                                                {{ $statusLabels[$item->status] ?? ucfirst($item->status) }}
                                             </span>
                                         </td>
                                     </tr>
@@ -284,10 +290,17 @@
             type: 'bar',
             data: {
                 labels: {!! json_encode($qcByProcess->pluck('process')->map(function($p) {
-                    return ucfirst(str_replace('_', ' ', $p));
+                    $translations = [
+                        'hanging' => 'Hanging',
+                        'buttoning' => 'Kancing',
+                        'plating' => 'Plating',
+                        'steaming' => 'Setrika',
+                        'thread_trimming' => 'Potong Benang'
+                    ];
+                    return $translations[$p] ?? ucfirst(str_replace('_', ' ', $p));
                 })) !!},
                 datasets: [{
-                    label: 'Quantity Processed',
+                    label: 'Jumlah Diproses',
                     data: {!! json_encode($qcByProcess->pluck('total')) !!},
                     backgroundColor: [
                         'rgba(59, 130, 246, 0.8)',
@@ -328,7 +341,13 @@
             type: 'doughnut',
             data: {
                 labels: {!! json_encode($incomingByStatus->pluck('status')->map(function($s) {
-                    return ucfirst($s);
+                    $translations = [
+                        'received' => 'Diterima',
+                        'qc' => 'QC',
+                        'completed' => 'Selesai',
+                        'revised' => 'Revisi'
+                    ];
+                    return $translations[$s] ?? ucfirst($s);
                 })) !!},
                 datasets: [{
                     data: {!! json_encode($incomingByStatus->pluck('count')) !!},
