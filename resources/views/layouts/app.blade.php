@@ -86,6 +86,16 @@
             </div>
         </div>
 
+        <!-- Toast Notifications -->
+        <x-toast-notification :message="session('success')" type="success" />
+        <x-toast-notification :message="session('error')" type="error" />
+        <x-toast-notification :message="session('info')" type="info" />
+
+        <!-- Delete Modal -->
+        <x-delete-modal>
+            Apakah Anda yakin ingin menghapus data ini? Data yang sudah dihapus tidak dapat dikembalikan.
+        </x-delete-modal>
+
         <!-- Additional Scripts -->
         @stack('scripts')
     </body>
