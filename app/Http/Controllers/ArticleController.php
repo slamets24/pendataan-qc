@@ -11,9 +11,10 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with('brand')->latest()->paginate(10);
+        $perPage = $request->get('per_page', 5);
+        $articles = Article::with('brand')->latest()->paginate($perPage);
         return view('pages.articles.index', compact('articles'));
     }
 

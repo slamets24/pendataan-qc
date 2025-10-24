@@ -16,11 +16,12 @@ class IncomingGoodsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 5);
         $incomingGoods = IncomingGoods::with(['brand', 'article', 'color', 'size', 'purchaseOrder', 'salesChannel'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate($perPage);
 
         return view('pages.incoming-goods.index', compact('incomingGoods'));
     }

@@ -10,9 +10,10 @@ class ColorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $colors = Color::latest()->paginate(10);
+        $perPage = $request->get('per_page', 5);
+        $colors = Color::latest()->paginate($perPage);
         return view('pages.colors.index', compact('colors'));
     }
 

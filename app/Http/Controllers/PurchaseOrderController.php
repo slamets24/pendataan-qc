@@ -14,9 +14,10 @@ class PurchaseOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])->latest()->paginate(10);
+        $perPage = $request->get('per_page', 5);
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])->latest()->paginate($perPage);
         return view('pages.purchase-orders.index', compact('purchaseOrders'));
     }
 

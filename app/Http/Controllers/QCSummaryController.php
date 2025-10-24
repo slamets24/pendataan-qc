@@ -12,11 +12,12 @@ class QCSummaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 5);
         $qcSummaries = QCSummary::with(['brand', 'article'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate($perPage);
 
         return view('pages.qc-summary.index', compact('qcSummaries'));
     }

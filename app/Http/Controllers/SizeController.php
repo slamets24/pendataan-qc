@@ -10,9 +10,10 @@ class SizeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sizes = Size::latest()->paginate(10);
+        $perPage = $request->get('per_page', 5);
+        $sizes = Size::latest()->paginate($perPage);
         return view('pages.sizes.index', compact('sizes'));
     }
 

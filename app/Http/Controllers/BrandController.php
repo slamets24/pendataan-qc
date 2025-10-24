@@ -10,9 +10,10 @@ class BrandController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brands = Brand::latest()->paginate(10);
+        $perPage = $request->get('per_page', 5);
+        $brands = Brand::latest()->paginate($perPage);
         return view('pages.brands.index', compact('brands'));
     }
 

@@ -14,11 +14,12 @@ class RevisionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 5);
         $revisions = Revision::with(['brand', 'article', 'color', 'size'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate($perPage);
 
         return view('pages.revisions.index', compact('revisions'));
     }
