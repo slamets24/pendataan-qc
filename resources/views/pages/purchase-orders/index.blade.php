@@ -58,23 +58,15 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="flex-1 min-w-[100px]">
-                                            <div class="flex justify-between text-xs mb-1">
-                                                <span class="text-gray-600 dark:text-gray-400">{{ $po->qty_sent }}/{{ $po->qty_ordered }}</span>
-                                                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $po->progress }}%</span>
-                                            </div>
-                                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                <div class="h-2 rounded-full transition-all duration-300
-                                                    {{ $po->auto_status == 'completed' ? 'bg-green-500' : 'bg-yellow-500' }}"
-                                                    style="width: {{ min($po->progress, 100) }}%"></div>
-                                            </div>
-                                        </div>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                                            {{ $po->qty_sent }}/{{ $po->qty_ordered }}
+                                        </span>
                                         @if($po->auto_status == 'completed')
-                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 whitespace-nowrap">
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 whitespace-nowrap">
                                                 Selesai
                                             </span>
                                         @else
-                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 whitespace-nowrap">
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 whitespace-nowrap">
                                                 Proses
                                             </span>
                                         @endif
