@@ -437,6 +437,28 @@
                     </div>
                 </div>
 
+                <!-- Articles with Most Revisions -->
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Artikel dengan Revisi Terbanyak</h3>
+                        <div class="space-y-3">
+                            @foreach($articlesWithRevisions as $article)
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $article->article_name }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $article->category }}</p>
+                                </div>
+                                <div class="ml-3">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                        {{ number_format($article->revisions_sum_qty ?? 0) }} pcs
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Top Articles -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
@@ -459,27 +481,6 @@
                     </div>
                 </div>
 
-                <!-- Articles with Most Revisions -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Artikel dengan Revisi Terbanyak</h3>
-                        <div class="space-y-3">
-                            @foreach($articlesWithRevisions as $article)
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $article->article_name }}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $article->category }}</p>
-                                </div>
-                                <div class="ml-3">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                                        {{ number_format($article->revisions_sum_qty ?? 0) }} pcs
-                                    </span>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </div>
