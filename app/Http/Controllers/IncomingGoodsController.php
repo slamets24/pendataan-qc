@@ -53,13 +53,13 @@ class IncomingGoodsController extends Controller
             'size_id' => 'required|exists:sizes,id',
             'qty' => 'required|integer|min:1',
             'date' => 'required|date',
-            'status' => 'required|in:received,qc,completed,revised',
             'po_id' => 'nullable|exists:purchase_orders,id',
             'sales_channel_id' => 'nullable|exists:sales_channels,id',
             'notes' => 'nullable|string',
         ]);
 
         $validated['created_by'] = auth()->id();
+        // Status akan otomatis 'received' dari database default
 
         IncomingGoods::create($validated);
 
@@ -102,12 +102,12 @@ class IncomingGoodsController extends Controller
             'size_id' => 'required|exists:sizes,id',
             'qty' => 'required|integer|min:1',
             'date' => 'required|date',
-            'status' => 'required|in:received,qc,completed,revised',
             'po_id' => 'nullable|exists:purchase_orders,id',
             'sales_channel_id' => 'nullable|exists:sales_channels,id',
             'notes' => 'nullable|string',
         ]);
 
+        // Status tidak diupdate dari form, akan dikelola oleh sistem
         $incomingGood->update($validated);
 
         return redirect()->route('incoming-goods.index')

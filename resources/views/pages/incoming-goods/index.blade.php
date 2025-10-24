@@ -50,14 +50,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     @php
                                         $statusColors = [
-                                            'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
                                             'received' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                                            'in_qc' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                            'qc' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                            'completed' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+                                            'revised' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
                                         ];
                                         $statusLabels = [
-                                            'pending' => 'Pending',
                                             'received' => 'Diterima',
-                                            'in_qc' => 'Di QC',
+                                            'qc' => 'Proses QC',
+                                            'completed' => 'Selesai',
+                                            'revised' => 'Revisi',
                                         ];
                                     @endphp
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColors[$item->status] ?? '' }}">

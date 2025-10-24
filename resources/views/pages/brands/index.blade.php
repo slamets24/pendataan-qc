@@ -40,15 +40,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                     @php
                                         $typeColors = [
-                                            'internal' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                            'po' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
                                             'reseller' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                                            'store' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+                                            'store_stock' => 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
                                             'makloon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
                                         ];
                                         $typeLabels = [
-                                            'internal' => 'Internal',
+                                            'po' => 'PO',
                                             'reseller' => 'Reseller',
-                                            'store' => 'Store',
+                                            'store_stock' => 'Stok Toko',
                                             'makloon' => 'Makloon',
                                         ];
                                     @endphp

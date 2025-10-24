@@ -113,23 +113,6 @@
                             </div>
 
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Status <span class="text-red-500">*</span>
-                                </label>
-                                <select name="status" id="status"
-                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        required>
-                                    <option value="">Pilih Status</option>
-                                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="received" {{ old('status') == 'received' ? 'selected' : '' }}>Diterima</option>
-                                    <option value="in_qc" {{ old('status') == 'in_qc' ? 'selected' : '' }}>Di QC</option>
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
                                 <label for="po_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Purchase Order
                                 </label>

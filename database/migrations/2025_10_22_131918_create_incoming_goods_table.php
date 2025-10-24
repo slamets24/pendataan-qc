@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->integer('qty');
             $table->date('date');
-            $table->enum('status', ['received', 'qc', 'completed', 'revised']);
+            $table->enum('status', ['received', 'qc', 'completed', 'revised'])->default('received');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('po_id')->nullable()->constrained('purchase_orders')->onDelete('set null'); // only for PO-based brands
             $table->foreignId('sales_channel_id')->nullable()->constrained('sales_channels')->onDelete('set null'); // only for Lobang Kancing
