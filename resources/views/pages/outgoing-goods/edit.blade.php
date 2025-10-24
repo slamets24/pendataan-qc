@@ -6,6 +6,13 @@
     </x-slot>
 
     <div class="p-4 sm:p-6 lg:p-8">
+        {{-- Breadcrumb --}}
+        <x-breadcrumb :items="[
+            ['label' => 'Dashboard', 'url' => route('dashboard')],
+            ['label' => 'Kirim Packing', 'url' => route('outgoing-goods.index')],
+            ['label' => 'Edit Kirim Packing']
+        ]" />
+
         <div class="max-w-3xl mx-auto">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                 <div class="p-6">

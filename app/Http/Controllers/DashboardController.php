@@ -72,12 +72,12 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // QC Process Summary - grouped by process type
+        // QC Process Summary - grouped by process type with custom order
         $qcByProcessQuery = QCSummary::select('process', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $qcByProcessQuery->where('date', '>=', $dateFrom);
         }
-        $qcByProcess = $qcByProcessQuery->groupBy('process')->get();
+        $qcByProcess = $this->sortQCProcessByCustomOrder($qcByProcessQuery->groupBy('process')->get());
 
         // Top Articles by Incoming Quantity
         $topArticles = Article::withSum('incomingGoods', 'qty')
@@ -147,17 +147,29 @@ class DashboardController extends Controller
         };
     }
 
+    private function sortQCProcessByCustomOrder($qcByProcess)
+    {
+        // Custom order: Gantungan, Buang Benang, Kancing, Plat, Steam
+        // hanging, thread_trimming, buttoning, plating, steaming
+        $processOrder = ['hanging', 'thread_trimming', 'buttoning', 'plating', 'steaming'];
+
+        return $qcByProcess->sortBy(function($item) use ($processOrder) {
+            $index = array_search($item->process, $processOrder);
+            return $index !== false ? $index : 999;
+        })->values();
+    }
+
     public function getChartData(Request $request)
     {
         $filter = $request->get('filter', 'all');
         $dateFrom = $this->getDateFromFilter($filter);
 
-        // QC Process Summary
+        // QC Process Summary with custom order
         $qcByProcessQuery = QCSummary::select('process', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $qcByProcessQuery->where('date', '>=', $dateFrom);
         }
-        $qcByProcess = $qcByProcessQuery->groupBy('process')->get();
+        $qcByProcess = $this->sortQCProcessByCustomOrder($qcByProcessQuery->groupBy('process')->get());
 
         // Incoming Goods by Status
         $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
@@ -178,5 +190,59 @@ class DashboardController extends Controller
             'incomingByStatus' => $incomingByStatus,
             'outgoingByStatus' => $outgoingByStatus,
         ]);
+    }
+
+    public function welcome(Request $request)
+    {
+        // Get filter parameter (default: 'today' for public page)
+        $filter = $request->get('filter', 'today');
+
+        // Calculate date range based on filter
+        $dateFrom = $this->getDateFromFilter($filter);
+
+        // Total Statistics (for today or filtered period)
+        $totalIncomingGoodsQuery = IncomingGoods::query();
+        $totalOutgoingGoodsQuery = OutgoingGoods::query();
+        $totalQCProcessedQuery = QCSummary::query();
+
+        if ($dateFrom) {
+            $totalIncomingGoodsQuery->where('date', '>=', $dateFrom);
+            $totalOutgoingGoodsQuery->where('date', '>=', $dateFrom);
+            $totalQCProcessedQuery->where('date', '>=', $dateFrom);
+        }
+
+        $totalIncomingGoods = $totalIncomingGoodsQuery->sum('qty');
+        $totalOutgoingGoods = $totalOutgoingGoodsQuery->sum('qty');
+        $totalQCProcessed = $totalQCProcessedQuery->sum('qty');
+
+        // QC Process Summary - grouped by process type with custom order
+        $qcByProcessQuery = QCSummary::select('process', DB::raw('sum(qty) as total'));
+        if ($dateFrom) {
+            $qcByProcessQuery->where('date', '>=', $dateFrom);
+        }
+        $qcByProcess = $this->sortQCProcessByCustomOrder($qcByProcessQuery->groupBy('process')->get());
+
+        // Incoming Goods by Status
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $incomingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $incomingByStatus = $incomingByStatusQuery->groupBy('status')->get();
+
+        // Outgoing Goods by Status
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $outgoingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $outgoingByStatus = $outgoingByStatusQuery->groupBy('status')->get();
+
+        return view('welcome', compact(
+            'totalIncomingGoods',
+            'totalOutgoingGoods',
+            'totalQCProcessed',
+            'incomingByStatus',
+            'outgoingByStatus',
+            'qcByProcess'
+        ));
     }
 }
