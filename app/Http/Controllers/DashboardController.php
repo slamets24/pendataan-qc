@@ -16,8 +16,14 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Get filter parameter (default: 'all')
+        $filter = $request->get('filter', 'all');
+
+        // Calculate date range based on filter
+        $dateFrom = $this->getDateFromFilter($filter);
+
         // Total Statistics
         $totalBrands = Brand::count();
         $totalArticles = Article::count();
@@ -35,9 +41,11 @@ class DashboardController extends Controller
             ->get();
 
         // Outgoing Goods by Status
-        $outgoingByStatus = OutgoingGoods::select('status', DB::raw('count(*) as count'))
-            ->groupBy('status')
-            ->get();
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $outgoingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $outgoingByStatus = $outgoingByStatusQuery->groupBy('status')->get();
 
         // Recent Outgoing Goods
         $recentOutgoing = OutgoingGoods::with(['brand', 'article', 'color', 'size'])
@@ -46,9 +54,11 @@ class DashboardController extends Controller
             ->get();
 
         // Incoming Goods by Status
-        $incomingByStatus = IncomingGoods::select('status', DB::raw('count(*) as count'))
-            ->groupBy('status')
-            ->get();
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $incomingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $incomingByStatus = $incomingByStatusQuery->groupBy('status')->get();
 
         // Recent Incoming Goods
         $recentIncoming = IncomingGoods::with(['brand', 'article', 'color', 'size', 'purchaseOrder', 'salesChannel'])
@@ -63,9 +73,11 @@ class DashboardController extends Controller
             ->get();
 
         // QC Process Summary - grouped by process type
-        $qcByProcess = QCSummary::select('process', DB::raw('sum(qty) as total'))
-            ->groupBy('process')
-            ->get();
+        $qcByProcessQuery = QCSummary::select('process', DB::raw('sum(qty) as total'));
+        if ($dateFrom) {
+            $qcByProcessQuery->where('date', '>=', $dateFrom);
+        }
+        $qcByProcess = $qcByProcessQuery->groupBy('process')->get();
 
         // Top Articles by Incoming Quantity
         $topArticles = Article::withSum('incomingGoods', 'qty')
@@ -121,5 +133,50 @@ class DashboardController extends Controller
             'monthlyIncoming',
             'dailyQC'
         ));
+    }
+
+    private function getDateFromFilter($filter)
+    {
+        return match($filter) {
+            'today' => now()->startOfDay(),
+            '3days' => now()->subDays(3)->startOfDay(),
+            '1week' => now()->subWeek()->startOfDay(),
+            '1month' => now()->subMonth()->startOfDay(),
+            '1year' => now()->subYear()->startOfDay(),
+            default => null, // 'all'
+        };
+    }
+
+    public function getChartData(Request $request)
+    {
+        $filter = $request->get('filter', 'all');
+        $dateFrom = $this->getDateFromFilter($filter);
+
+        // QC Process Summary
+        $qcByProcessQuery = QCSummary::select('process', DB::raw('sum(qty) as total'));
+        if ($dateFrom) {
+            $qcByProcessQuery->where('date', '>=', $dateFrom);
+        }
+        $qcByProcess = $qcByProcessQuery->groupBy('process')->get();
+
+        // Incoming Goods by Status
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $incomingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $incomingByStatus = $incomingByStatusQuery->groupBy('status')->get();
+
+        // Outgoing Goods by Status
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        if ($dateFrom) {
+            $outgoingByStatusQuery->where('date', '>=', $dateFrom);
+        }
+        $outgoingByStatus = $outgoingByStatusQuery->groupBy('status')->get();
+
+        return response()->json([
+            'qcByProcess' => $qcByProcess,
+            'incomingByStatus' => $incomingByStatus,
+            'outgoingByStatus' => $outgoingByStatus,
+        ]);
     }
 }

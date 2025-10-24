@@ -166,11 +166,21 @@
             </div>
 
             <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-6" x-data="chartFilter()">
                 <!-- QC Process Chart -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Proses QC</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Proses QC</h3>
+                            <select x-model="qcFilter" @change="updateCharts('qc')" class="text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="all">Semuanya</option>
+                                <option value="today">Hari Ini</option>
+                                <option value="3days">3 Hari</option>
+                                <option value="1week">1 Minggu</option>
+                                <option value="1month">1 Bulan</option>
+                                <option value="1year">1 Tahun</option>
+                            </select>
+                        </div>
                         <canvas id="qcProcessChart" height="200"></canvas>
                     </div>
                 </div>
@@ -178,7 +188,17 @@
                 <!-- Status Barang Masuk Chart -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Status Barang Masuk</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Status Barang Masuk</h3>
+                            <select x-model="incomingFilter" @change="updateCharts('incoming')" class="text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="all">Semuanya</option>
+                                <option value="today">Hari Ini</option>
+                                <option value="3days">3 Hari</option>
+                                <option value="1week">1 Minggu</option>
+                                <option value="1month">1 Bulan</option>
+                                <option value="1year">1 Tahun</option>
+                            </select>
+                        </div>
                         <canvas id="statusChart" height="200"></canvas>
                     </div>
                 </div>
@@ -186,7 +206,17 @@
                 <!-- Status Outgoing Chart -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Status Kirim Packing</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Status Kirim Packing</h3>
+                            <select x-model="outgoingFilter" @change="updateCharts('outgoing')" class="text-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="all">Semuanya</option>
+                                <option value="today">Hari Ini</option>
+                                <option value="3days">3 Hari</option>
+                                <option value="1week">1 Minggu</option>
+                                <option value="1month">1 Bulan</option>
+                                <option value="1year">1 Tahun</option>
+                            </select>
+                        </div>
                         <canvas id="outgoingChart" height="200"></canvas>
                     </div>
                 </div>
@@ -458,9 +488,43 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Alpine.js component for chart filtering
+        function chartFilter() {
+            return {
+                qcFilter: 'all',
+                incomingFilter: 'all',
+                outgoingFilter: 'all',
+
+                async updateCharts(chartType) {
+                    let filter;
+                    if (chartType === 'qc') filter = this.qcFilter;
+                    else if (chartType === 'incoming') filter = this.incomingFilter;
+                    else if (chartType === 'outgoing') filter = this.outgoingFilter;
+
+                    try {
+                        const response = await fetch(`{{ route('dashboard.chart-data') }}?filter=${filter}`);
+                        const data = await response.json();
+
+                        if (chartType === 'qc') {
+                            updateQCChart(data.qcByProcess);
+                        } else if (chartType === 'incoming') {
+                            updateIncomingChart(data.incomingByStatus);
+                        } else if (chartType === 'outgoing') {
+                            updateOutgoingChart(data.outgoingByStatus);
+                        }
+                    } catch (error) {
+                        console.error('Error fetching chart data:', error);
+                    }
+                }
+            }
+        }
+
+        // Store chart instances
+        let qcProcessChart, statusChart, outgoingChart;
+
         // QC Process Chart
         const qcProcessCtx = document.getElementById('qcProcessChart').getContext('2d');
-        const qcProcessChart = new Chart(qcProcessCtx, {
+        qcProcessChart = new Chart(qcProcessCtx, {
             type: 'bar',
             data: {
                 labels: {!! json_encode($qcByProcess->pluck('process')->map(function($p) {
@@ -511,7 +575,7 @@
 
         // Status Chart
         const statusCtx = document.getElementById('statusChart').getContext('2d');
-        const statusChart = new Chart(statusCtx, {
+        statusChart = new Chart(statusCtx, {
             type: 'doughnut',
             data: {
                 labels: {!! json_encode($incomingByStatus->pluck('status')->map(function($s) {
@@ -553,7 +617,7 @@
 
         // Outgoing Goods Chart
         const outgoingCtx = document.getElementById('outgoingChart').getContext('2d');
-        const outgoingChart = new Chart(outgoingCtx, {
+        outgoingChart = new Chart(outgoingCtx, {
             type: 'pie',
             data: {
                 labels: {!! json_encode($outgoingByStatus->pluck('status')->map(function($s) {
@@ -621,6 +685,55 @@
                 }
             }
         });
+
+        // Update functions for each chart
+        function updateQCChart(data) {
+            const translations = {
+                'hanging': 'Hanging',
+                'buttoning': 'Kancing',
+                'plating': 'Plating',
+                'steaming': 'Setrika',
+                'thread_trimming': 'Potong Benang'
+            };
+
+            const labels = data.map(item => translations[item.process] || item.process.replace('_', ' '));
+            const values = data.map(item => item.total);
+
+            qcProcessChart.data.labels = labels;
+            qcProcessChart.data.datasets[0].data = values;
+            qcProcessChart.update();
+        }
+
+        function updateIncomingChart(data) {
+            const translations = {
+                'received': 'Diterima',
+                'qc': 'QC',
+                'completed': 'Selesai',
+                'revised': 'Revisi'
+            };
+
+            const labels = data.map(item => translations[item.status] || item.status);
+            const values = data.map(item => item.count);
+
+            statusChart.data.labels = labels;
+            statusChart.data.datasets[0].data = values;
+            statusChart.update();
+        }
+
+        function updateOutgoingChart(data) {
+            const translations = {
+                'sent_to_packing': 'Kirim Packing',
+                'returned_to_qc': 'Return QC',
+                'cancelled': 'Dibatalkan'
+            };
+
+            const labels = data.map(item => translations[item.status] || item.status.replace('_', ' '));
+            const values = data.map(item => item.count);
+
+            outgoingChart.data.labels = labels;
+            outgoingChart.data.datasets[0].data = values;
+            outgoingChart.update();
+        }
     </script>
     @endpush
 </x-app-layout>
