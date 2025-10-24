@@ -30,7 +30,14 @@ class RevisionController extends Controller
     public function create()
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get()->map(function($article) {
+            return [
+                'id' => $article->id,
+                'name' => $article->article_name,
+                'brand_id' => $article->brand_id,
+                'brand_name' => $article->brand->name ?? ''
+            ];
+        });
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
 
@@ -74,7 +81,14 @@ class RevisionController extends Controller
     public function edit(Revision $revision)
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get()->map(function($article) {
+            return [
+                'id' => $article->id,
+                'name' => $article->article_name,
+                'brand_id' => $article->brand_id,
+                'brand_name' => $article->brand->name ?? ''
+            ];
+        });
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
 

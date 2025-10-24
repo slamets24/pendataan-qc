@@ -28,7 +28,14 @@ class QCSummaryController extends Controller
     public function create()
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get()->map(function($article) {
+            return [
+                'id' => $article->id,
+                'name' => $article->article_name,
+                'brand_id' => $article->brand_id,
+                'brand_name' => $article->brand->name ?? ''
+            ];
+        });
 
         return view('pages.qc-summary.create', compact('brands', 'articles'));
     }
@@ -67,7 +74,14 @@ class QCSummaryController extends Controller
     public function edit(QCSummary $qcSummary)
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get()->map(function($article) {
+            return [
+                'id' => $article->id,
+                'name' => $article->article_name,
+                'brand_id' => $article->brand_id,
+                'brand_name' => $article->brand->name ?? ''
+            ];
+        });
 
         return view('pages.qc-summary.edit', compact('qcSummary', 'brands', 'articles'));
     }

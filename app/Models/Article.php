@@ -19,6 +19,12 @@ class Article extends Model
         'created_date' => 'date',
     ];
 
+    // Accessor untuk name (alias dari article_name)
+    public function getNameAttribute()
+    {
+        return $this->article_name;
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
