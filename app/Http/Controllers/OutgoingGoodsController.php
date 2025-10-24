@@ -19,7 +19,7 @@ class OutgoingGoodsController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 5);
-        $outgoingGoods = OutgoingGoods::with(['brand', 'article', 'color', 'size', 'incomingGoods', 'createdBy'])
+        $outgoingGoods = OutgoingGoods::with(['brand', 'article', 'color', 'size', 'incomingGoods', 'creator'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
