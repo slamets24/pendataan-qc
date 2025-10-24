@@ -134,23 +134,6 @@
                             </div>
 
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Status <span class="text-red-500">*</span>
-                                </label>
-                                <select name="status" id="status"
-                                        class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        required>
-                                    <option value="">Pilih Status</option>
-                                    <option value="sent_to_packing" {{ old('status') == 'sent_to_packing' ? 'selected' : '' }}>Kirim ke Packing</option>
-                                    <option value="returned_to_qc" {{ old('status') == 'returned_to_qc' ? 'selected' : '' }}>Kembali ke QC</option>
-                                    <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Batal</option>
-                                </select>
-                                @error('status')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
                                 <label for="incoming_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Barang Masuk (Opsional)
                                 </label>
@@ -195,5 +178,51 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Data PO dengan relasi untuk auto-fill
+        const purchaseOrders = @json($purchaseOrdersData);
+        console.log('Purchase Orders Data:', purchaseOrders);
+
+        // Event listener untuk dropdown PO
+        document.addEventListener('DOMContentLoaded', function() {
+            const poSelect = document.getElementById('po_id');
+
+            if (poSelect) {
+                poSelect.addEventListener('change', function() {
+                    const poId = parseInt(this.value);
+                    console.log('Selected PO ID:', poId);
+
+                    if (!poId) {
+                        // Jika tidak memilih PO, reset semua field ke default
+                        document.getElementById('brand_id').value = '';
+                        document.getElementById('article_id').value = '';
+                        document.getElementById('color_id').value = '';
+                        document.getElementById('size_id').value = '';
+                        return;
+                    }
+
+                    // Cari data PO yang dipilih
+                    const selectedPO = purchaseOrders.find(po => po.id === poId);
+                    console.log('Selected PO:', selectedPO);
+
+                    if (selectedPO) {
+                        // Auto-fill field berdasarkan data PO
+                        document.getElementById('brand_id').value = selectedPO.brand_id;
+                        document.getElementById('article_id').value = selectedPO.article_id;
+                        document.getElementById('color_id').value = selectedPO.color_id;
+                        document.getElementById('size_id').value = selectedPO.size_id;
+
+                        console.log('Auto-filled:', {
+                            brand: selectedPO.brand_id,
+                            article: selectedPO.article_id,
+                            color: selectedPO.color_id,
+                            size: selectedPO.size_id
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>
 

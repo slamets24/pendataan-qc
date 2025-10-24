@@ -196,5 +196,47 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Data PO dengan relasi untuk auto-fill
+        const purchaseOrders = @json($purchaseOrdersData);
+        console.log('Purchase Orders Data:', purchaseOrders);
+
+        // Event listener untuk dropdown PO
+        document.addEventListener('DOMContentLoaded', function() {
+            const poSelect = document.getElementById('po_id');
+
+            if (poSelect) {
+                poSelect.addEventListener('change', function() {
+                    const poId = parseInt(this.value);
+                    console.log('Selected PO ID:', poId);
+
+                    if (!poId) {
+                        // Jika tidak memilih PO, tidak reset field (karena di edit)
+                        return;
+                    }
+
+                    // Cari data PO yang dipilih
+                    const selectedPO = purchaseOrders.find(po => po.id === poId);
+                    console.log('Selected PO:', selectedPO);
+
+                    if (selectedPO) {
+                        // Auto-fill field berdasarkan data PO
+                        document.getElementById('brand_id').value = selectedPO.brand_id;
+                        document.getElementById('article_id').value = selectedPO.article_id;
+                        document.getElementById('color_id').value = selectedPO.color_id;
+                        document.getElementById('size_id').value = selectedPO.size_id;
+
+                        console.log('Auto-filled:', {
+                            brand: selectedPO.brand_id,
+                            article: selectedPO.article_id,
+                            color: selectedPO.color_id,
+                            size: selectedPO.size_id
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>
 

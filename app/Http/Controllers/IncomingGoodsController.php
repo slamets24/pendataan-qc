@@ -35,10 +35,28 @@ class IncomingGoodsController extends Controller
         $articles = Article::with('brand')->orderBy('article_name')->get();
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
-        $purchaseOrders = PurchaseOrder::orderBy('po_number')->get();
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
+            ->orderBy('po_number')
+            ->get()
+            ->filter(function($po) {
+                // Hanya tampilkan PO yang belum 100% complete (masih ada sisa qty)
+                return $po->qty_remaining > 0;
+            })
+            ->values(); // Re-index untuk jadi array proper
         $salesChannels = SalesChannel::orderBy('name')->get();
 
-        return view('pages.incoming-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'purchaseOrders', 'salesChannels'));
+        // Prepare PO data for auto-fill
+        $purchaseOrdersData = $purchaseOrders->map(function($po) {
+            return [
+                'id' => $po->id,
+                'brand_id' => $po->brand_id,
+                'article_id' => $po->article_id,
+                'color_id' => $po->color_id,
+                'size_id' => $po->size_id,
+            ];
+        })->values(); // Re-index untuk jadi array proper
+
+        return view('pages.incoming-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'purchaseOrders', 'salesChannels', 'purchaseOrdersData'));
     }
 
     /**
@@ -84,10 +102,28 @@ class IncomingGoodsController extends Controller
         $articles = Article::with('brand')->orderBy('article_name')->get();
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
-        $purchaseOrders = PurchaseOrder::orderBy('po_number')->get();
+        $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
+            ->orderBy('po_number')
+            ->get()
+            ->filter(function($po) {
+                // Hanya tampilkan PO yang belum 100% complete (masih ada sisa qty)
+                return $po->qty_remaining > 0;
+            })
+            ->values(); // Re-index untuk jadi array proper
         $salesChannels = SalesChannel::orderBy('name')->get();
 
-        return view('pages.incoming-goods.edit', compact('incomingGood', 'brands', 'articles', 'colors', 'sizes', 'purchaseOrders', 'salesChannels'));
+        // Prepare PO data for auto-fill
+        $purchaseOrdersData = $purchaseOrders->map(function($po) {
+            return [
+                'id' => $po->id,
+                'brand_id' => $po->brand_id,
+                'article_id' => $po->article_id,
+                'color_id' => $po->color_id,
+                'size_id' => $po->size_id,
+            ];
+        })->values(); // Re-index untuk jadi array proper
+
+        return view('pages.incoming-goods.edit', compact('incomingGood', 'brands', 'articles', 'colors', 'sizes', 'purchaseOrders', 'salesChannels', 'purchaseOrdersData'));
     }
 
     /**

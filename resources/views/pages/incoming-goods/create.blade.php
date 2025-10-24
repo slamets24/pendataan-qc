@@ -112,20 +112,25 @@
                                 @enderror
                             </div>
 
-                            <div>
+                            <div class="md:col-span-2">
                                 <label for="po_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Purchase Order
+                                    Purchase Order (Opsional)
                                 </label>
                                 <select name="po_id" id="po_id"
                                         class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">Pilih PO (Opsional)</option>
+                                    <option value="">Tidak Terkait PO</option>
                                     @foreach($purchaseOrders as $po)
-                                        <option value="{{ $po->id }}" {{ old('po_id') == $po->id ? 'selected' : '' }}>{{ $po->po_number }}</option>
+                                        <option value="{{ $po->id }}" {{ old('po_id') == $po->id ? 'selected' : '' }}>
+                                            {{ $po->po_number }} - {{ $po->brand->name }} - {{ $po->article->article_name }} ({{ $po->color->name }}/{{ $po->size->code }})
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('po_id')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    💡 Pilih PO untuk auto-fill Brand, Artikel, Warna, dan Ukuran. Field tetap bisa diedit manual.
+                                </p>
                             </div>
 
                             <div>
@@ -171,5 +176,51 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Data PO dengan relasi untuk auto-fill
+        const purchaseOrders = @json($purchaseOrdersData);
+        console.log('Purchase Orders Data:', purchaseOrders);
+
+        // Event listener untuk dropdown PO
+        document.addEventListener('DOMContentLoaded', function() {
+            const poSelect = document.getElementById('po_id');
+
+            if (poSelect) {
+                poSelect.addEventListener('change', function() {
+                    const poId = parseInt(this.value);
+                    console.log('Selected PO ID:', poId);
+
+                    if (!poId) {
+                        // Jika tidak memilih PO, reset semua field ke default
+                        document.getElementById('brand_id').value = '';
+                        document.getElementById('article_id').value = '';
+                        document.getElementById('color_id').value = '';
+                        document.getElementById('size_id').value = '';
+                        return;
+                    }
+
+                    // Cari data PO yang dipilih
+                    const selectedPO = purchaseOrders.find(po => po.id === poId);
+                    console.log('Selected PO:', selectedPO);
+
+                    if (selectedPO) {
+                        // Auto-fill field berdasarkan data PO
+                        document.getElementById('brand_id').value = selectedPO.brand_id;
+                        document.getElementById('article_id').value = selectedPO.article_id;
+                        document.getElementById('color_id').value = selectedPO.color_id;
+                        document.getElementById('size_id').value = selectedPO.size_id;
+
+                        console.log('Auto-filled:', {
+                            brand: selectedPO.brand_id,
+                            article: selectedPO.article_id,
+                            color: selectedPO.color_id,
+                            size: selectedPO.size_id
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </x-app-layout>
 

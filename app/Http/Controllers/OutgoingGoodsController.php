@@ -41,9 +41,25 @@ class OutgoingGoodsController extends Controller
         $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
             ->where('status', 'in_progress')
             ->orderBy('order_date', 'desc')
-            ->get();
+            ->get()
+            ->filter(function($po) {
+                // Hanya tampilkan PO yang belum 100% complete (masih ada sisa qty)
+                return $po->qty_remaining > 0;
+            })
+            ->values(); // Re-index untuk jadi array proper
 
-        return view('pages.outgoing-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders'));
+        // Prepare PO data for auto-fill
+        $purchaseOrdersData = $purchaseOrders->map(function($po) {
+            return [
+                'id' => $po->id,
+                'brand_id' => $po->brand_id,
+                'article_id' => $po->article_id,
+                'color_id' => $po->color_id,
+                'size_id' => $po->size_id,
+            ];
+        })->values(); // Re-index untuk jadi array proper
+
+        return view('pages.outgoing-goods.create', compact('brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders', 'purchaseOrdersData'));
     }
 
     /**
@@ -52,6 +68,7 @@ class OutgoingGoodsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'po_id' => 'nullable|exists:purchase_orders,id',
             'brand_id' => 'required|exists:brands,id',
             'article_id' => 'required|exists:articles,id',
             'color_id' => 'required|exists:colors,id',
@@ -59,7 +76,6 @@ class OutgoingGoodsController extends Controller
             'incoming_id' => 'nullable|exists:incoming_goods,id',
             'qty' => 'required|integer|min:1',
             'date' => 'required|date',
-            'status' => 'required|in:sent_to_packing,returned_to_qc,cancelled',
             'notes' => 'nullable|string',
         ]);
 
@@ -94,9 +110,25 @@ class OutgoingGoodsController extends Controller
         $purchaseOrders = PurchaseOrder::with(['brand', 'article', 'color', 'size'])
             ->where('status', 'in_progress')
             ->orderBy('order_date', 'desc')
-            ->get();
+            ->get()
+            ->filter(function($po) {
+                // Hanya tampilkan PO yang belum 100% complete (masih ada sisa qty)
+                return $po->qty_remaining > 0;
+            })
+            ->values(); // Re-index untuk jadi array proper
 
-        return view('pages.outgoing-goods.edit', compact('outgoingGood', 'brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders'));
+        // Prepare PO data for auto-fill
+        $purchaseOrdersData = $purchaseOrders->map(function($po) {
+            return [
+                'id' => $po->id,
+                'brand_id' => $po->brand_id,
+                'article_id' => $po->article_id,
+                'color_id' => $po->color_id,
+                'size_id' => $po->size_id,
+            ];
+        })->values(); // Re-index untuk jadi array proper
+
+        return view('pages.outgoing-goods.edit', compact('outgoingGood', 'brands', 'articles', 'colors', 'sizes', 'incomingGoods', 'purchaseOrders', 'purchaseOrdersData'));
     }
 
     /**
