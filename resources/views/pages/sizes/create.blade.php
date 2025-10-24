@@ -25,20 +25,9 @@
                             </label>
                             <input type="text" name="code" id="code" value="{{ old('code') }}"
                                    class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                   placeholder="Contoh: S, M, L, XL, XXL"
                                    required>
                             @error('code')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Kategori <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="category" id="category" value="{{ old('category') }}"
-                                   class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                   required>
-                            @error('category')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                             @enderror
                         </div>

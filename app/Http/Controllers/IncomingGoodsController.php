@@ -32,7 +32,7 @@ class IncomingGoodsController extends Controller
     public function create()
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get();
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
         $purchaseOrders = PurchaseOrder::orderBy('po_number')->get();
@@ -81,7 +81,7 @@ class IncomingGoodsController extends Controller
     public function edit(IncomingGoods $incomingGood)
     {
         $brands = Brand::orderBy('name')->get();
-        $articles = Article::orderBy('name')->get();
+        $articles = Article::with('brand')->orderBy('article_name')->get();
         $colors = Color::orderBy('name')->get();
         $sizes = Size::orderBy('name')->get();
         $purchaseOrders = PurchaseOrder::orderBy('po_number')->get();

@@ -11,6 +11,14 @@ class Size extends Model
         'code',
     ];
 
+    /**
+     * Accessor to allow using $size->name instead of $size->code
+     */
+    public function getNameAttribute()
+    {
+        return $this->code;
+    }
+
     public function incomingGoods(): HasMany
     {
         return $this->hasMany(IncomingGoods::class);

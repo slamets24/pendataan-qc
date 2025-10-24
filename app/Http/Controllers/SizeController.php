@@ -31,8 +31,7 @@ class SizeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:50',
-            'category' => 'required|string|max:255',
+            'code' => 'required|string|max:50|unique:sizes,code',
         ]);
 
         Size::create($validated);
@@ -63,8 +62,7 @@ class SizeController extends Controller
     public function update(Request $request, Size $size)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:50',
-            'category' => 'required|string|max:255',
+            'code' => 'required|string|max:50|unique:sizes,code,' . $size->id,
         ]);
 
         $size->update($validated);
