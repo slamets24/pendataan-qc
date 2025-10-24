@@ -488,6 +488,7 @@
 
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script>
         // Alpine.js component for chart filtering
         function chartFilter() {
@@ -589,7 +590,7 @@
                     return $translations[$s] ?? ucfirst($s);
                 })) !!},
                 datasets: [{
-                    data: {!! json_encode($incomingByStatus->pluck('count')) !!},
+                    data: {!! json_encode($incomingByStatus->pluck('total')) !!},
                     backgroundColor: [
                         'rgba(59, 130, 246, 0.8)',
                         'rgba(245, 158, 11, 0.8)',
@@ -611,6 +612,28 @@
                 plugins: {
                     legend: {
                         position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed + ' pcs';
+                                return label;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        },
+                        formatter: function(value, context) {
+                            return value > 0 ? value : '';
+                        }
                     }
                 }
             }
@@ -630,7 +653,7 @@
                     return $translations[$s] ?? ucfirst(str_replace('_', ' ', $s));
                 })) !!},
                 datasets: [{
-                    data: {!! json_encode($outgoingByStatus->pluck('count')) !!},
+                    data: {!! json_encode($outgoingByStatus->pluck('total')) !!},
                     backgroundColor: [
                         'rgba(16, 185, 129, 0.8)',
                         'rgba(245, 158, 11, 0.8)',
@@ -650,6 +673,28 @@
                 plugins: {
                     legend: {
                         position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed + ' pcs';
+                                return label;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        },
+                        formatter: function(value, context) {
+                            return value > 0 ? value : '';
+                        }
                     }
                 }
             }
@@ -714,7 +759,7 @@
             };
 
             const labels = data.map(item => translations[item.status] || item.status);
-            const values = data.map(item => item.count);
+            const values = data.map(item => item.total);
 
             statusChart.data.labels = labels;
             statusChart.data.datasets[0].data = values;
@@ -729,7 +774,7 @@
             };
 
             const labels = data.map(item => translations[item.status] || item.status.replace('_', ' '));
-            const values = data.map(item => item.count);
+            const values = data.map(item => item.total);
 
             outgoingChart.data.labels = labels;
             outgoingChart.data.datasets[0].data = values;

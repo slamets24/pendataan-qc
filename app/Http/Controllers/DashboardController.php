@@ -41,7 +41,7 @@ class DashboardController extends Controller
             ->get();
 
         // Outgoing Goods by Status
-        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $outgoingByStatusQuery->where('date', '>=', $dateFrom);
         }
@@ -54,7 +54,7 @@ class DashboardController extends Controller
             ->get();
 
         // Incoming Goods by Status
-        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $incomingByStatusQuery->where('date', '>=', $dateFrom);
         }
@@ -172,14 +172,14 @@ class DashboardController extends Controller
         $qcByProcess = $this->sortQCProcessByCustomOrder($qcByProcessQuery->groupBy('process')->get());
 
         // Incoming Goods by Status
-        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $incomingByStatusQuery->where('date', '>=', $dateFrom);
         }
         $incomingByStatus = $incomingByStatusQuery->groupBy('status')->get();
 
         // Outgoing Goods by Status
-        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $outgoingByStatusQuery->where('date', '>=', $dateFrom);
         }
@@ -223,14 +223,14 @@ class DashboardController extends Controller
         $qcByProcess = $this->sortQCProcessByCustomOrder($qcByProcessQuery->groupBy('process')->get());
 
         // Incoming Goods by Status
-        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('count(*) as count'));
+        $incomingByStatusQuery = IncomingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $incomingByStatusQuery->where('date', '>=', $dateFrom);
         }
         $incomingByStatus = $incomingByStatusQuery->groupBy('status')->get();
 
         // Outgoing Goods by Status
-        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('count(*) as count'));
+        $outgoingByStatusQuery = OutgoingGoods::select('status', DB::raw('sum(qty) as total'));
         if ($dateFrom) {
             $outgoingByStatusQuery->where('date', '>=', $dateFrom);
         }

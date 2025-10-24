@@ -10,7 +10,7 @@
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Styles / Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
         <!-- Header -->
@@ -24,19 +24,19 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400">Dashboard Monitoring QC</p>
                     </div>
 
-                    @if (Route::has('login'))
+            @if (Route::has('login'))
                         <nav class="flex items-center space-x-4">
-                            @auth
+                    @auth
                                 <a href="{{ url('/dashboard') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition">
-                                    Dashboard
-                                </a>
-                            @else
+                            Dashboard
+                        </a>
+                    @else
                                 <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition">
                                     Login
                                 </a>
-                            @endauth
-                        </nav>
-                    @endif
+                    @endauth
+                </nav>
+            @endif
                 </div>
             </div>
         </header>
@@ -52,7 +52,7 @@
                             <div class="flex-shrink-0">
                                 <svg class="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-                                </svg>
+                                    </svg>
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
@@ -78,7 +78,7 @@
                             <div class="flex-shrink-0">
                                 <svg class="h-12 w-12 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
+                                    </svg>
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
@@ -104,7 +104,7 @@
                             <div class="flex-shrink-0">
                                 <svg class="h-12 w-12 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                </svg>
+                    </svg>
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
@@ -179,7 +179,7 @@
                         <canvas id="outgoingChart" height="250"></canvas>
                     </div>
                 </div>
-            </div>
+        </div>
 
             <!-- Footer Info -->
             <div class="mt-8 text-center">
@@ -191,6 +191,7 @@
         </main>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
         <script>
             // Alpine.js component for chart filtering
             function chartFilter() {
@@ -292,7 +293,7 @@
                         return $translations[$s] ?? ucfirst($s);
                     })) !!},
                     datasets: [{
-                        data: {!! json_encode($incomingByStatus->pluck('count')) !!},
+                        data: {!! json_encode($incomingByStatus->pluck('total')) !!},
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.8)',
                             'rgba(245, 158, 11, 0.8)',
@@ -314,6 +315,28 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed + ' pcs';
+                                    return label;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: function(value, context) {
+                                return value > 0 ? value : '';
+                            }
                         }
                     }
                 }
@@ -333,7 +356,7 @@
                         return $translations[$s] ?? ucfirst(str_replace('_', ' ', $s));
                     })) !!},
                     datasets: [{
-                        data: {!! json_encode($outgoingByStatus->pluck('count')) !!},
+                        data: {!! json_encode($outgoingByStatus->pluck('total')) !!},
                         backgroundColor: [
                             'rgba(16, 185, 129, 0.8)',
                             'rgba(245, 158, 11, 0.8)',
@@ -353,6 +376,28 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed + ' pcs';
+                                    return label;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: function(value, context) {
+                                return value > 0 ? value : '';
+                            }
                         }
                     }
                 }
@@ -385,7 +430,7 @@
                 };
 
                 const labels = data.map(item => translations[item.status] || item.status);
-                const values = data.map(item => item.count);
+                const values = data.map(item => item.total);
 
                 statusChart.data.labels = labels;
                 statusChart.data.datasets[0].data = values;
@@ -400,7 +445,7 @@
                 };
 
                 const labels = data.map(item => translations[item.status] || item.status.replace('_', ' '));
-                const values = data.map(item => item.count);
+                const values = data.map(item => item.total);
 
                 outgoingChart.data.labels = labels;
                 outgoingChart.data.datasets[0].data = values;
