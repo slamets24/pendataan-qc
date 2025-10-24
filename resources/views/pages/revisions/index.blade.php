@@ -28,13 +28,13 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No.</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Brand</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Artikel</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Warna</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ukuran</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kode Tailor</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kode QC</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Qty</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Alasan Revisi</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
@@ -44,9 +44,6 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ($revisions->currentPage() - 1) * $revisions->perPage() + $loop->iteration }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->date ? $revision->date->format('d M Y') : '-' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $revision->brand->name ?? '-' }}">{{ $revision->brand->name ?? '-' }}</div>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                                     <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $revision->article->article_name ?? '-' }}">{{ $revision->article->article_name ?? '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->color->name ?? '-' }}</td>
@@ -54,6 +51,9 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->tailor_code }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->qc_code }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->qty }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="max-w-[250px] md:max-w-sm truncate" title="{{ $revision->reason ?? '-' }}">{{ $revision->reason ?? '-' }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <a href="{{ route('revisions.edit', $revision) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">Edit</a>
                                     <button
