@@ -40,8 +40,12 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ($qcSummaries->currentPage() - 1) * $qcSummaries->perPage() + $loop->iteration }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $qc->date ? $qc->date->format('d M Y') : '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $qc->brand->name ?? '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $qc->article->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $qc->brand->name ?? '-' }}">{{ $qc->brand->name ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $qc->article->article_name ?? '-' }}">{{ $qc->article->article_name ?? '-' }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     @php
                                         $processLabels = [

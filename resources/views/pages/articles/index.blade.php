@@ -38,8 +38,12 @@
                             @forelse($articles as $article)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $article->brand->name ?? '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ $article->article_name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $article->brand->name ?? '-' }}">{{ $article->brand->name ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $article->article_name }}">{{ $article->article_name }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $article->category }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $article->created_date ? $article->created_date->format('d M Y') : '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

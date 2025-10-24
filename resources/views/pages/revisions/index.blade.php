@@ -43,8 +43,12 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ($revisions->currentPage() - 1) * $revisions->perPage() + $loop->iteration }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->date ? $revision->date->format('d M Y') : '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->brand->name ?? '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->article->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $revision->brand->name ?? '-' }}">{{ $revision->brand->name ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $revision->article->article_name ?? '-' }}">{{ $revision->article->article_name ?? '-' }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->color->name ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->size->name ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $revision->tailor_code }}</td>

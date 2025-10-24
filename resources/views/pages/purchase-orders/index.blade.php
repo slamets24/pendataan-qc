@@ -43,11 +43,11 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                     {{ $po->po_number }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $po->brand->name }}
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $po->brand->name }}">{{ $po->brand->name }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                    <div class="font-medium text-gray-900 dark:text-gray-100">{{ $po->article->article_name }}</div>
+                                    <div class="font-medium text-gray-900 dark:text-gray-100 max-w-[200px] md:max-w-xs truncate" title="{{ $po->article->article_name }}">{{ $po->article->article_name }}</div>
                                     <div class="text-xs text-gray-400">{{ $po->article->category }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">

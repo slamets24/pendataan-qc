@@ -42,8 +42,12 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ($outgoingGoods->currentPage() - 1) * $outgoingGoods->perPage() + $loop->iteration }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->date ? $item->date->format('d M Y') : '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->brand->name ?? '-' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->article->name ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $item->brand->name ?? '-' }}">{{ $item->brand->name ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                    <div class="max-w-[200px] md:max-w-xs truncate" title="{{ $item->article->article_name ?? '-' }}">{{ $item->article->article_name ?? '-' }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->color->name ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->size->name ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->qty }}</td>
